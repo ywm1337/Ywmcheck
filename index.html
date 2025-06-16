@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YWM CHECK</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      margin: 0;
+    }
+
+    .kategori-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('/mnt/data/ae538928-67ef-44d8-8aa2-fef88f31e933.png') no-repeat center center;
+      background-size: contain;
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    #kategori1:checked ~ .main #icerik-kategori1,
+    #kategori2:checked ~ .main #icerik-kategori2,
+    #kategori3:checked ~ .main #icerik-kategori3,
+    #kategori4:checked ~ .main #icerik-kategori4,
+    #kategori5:checked ~ .main #icerik-kategori5,
+    #admin:checked ~ .main #icerik-admin {
+      display: block;
+    }
+
+    .hover-glow {
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+      background-color: #7f1d1d;
+      box-shadow: 0 0 6px rgba(255, 0, 0, 0.4);
+    }
+
+    .hover-glow:hover {
+      background-color: #dc2626;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 1);
+    }
+
+    .transparent-card {
+      background-color: rgba(255, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .detay {
+      display: none;
+      font-size: 0.875rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .card:focus-within .detay,
+    .card:active .detay {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- GİZLİ RADIO INPUTLAR -->
+  <input type="radio" name="menu" id="kategori1" checked>
+  <input type="radio" name="menu" id="kategori2">
+  <input type="radio" name="menu" id="kategori3">
+  <input type="radio" name="menu" id="kategori4">
+  <input type="radio" name="menu" id="kategori5">
+  <input type="radio" name="menu" id="admin">
+
+  <!-- Arka plan görseli -->
+  <div class="kategori-background"></div>
+
+  <!-- Sidebar -->
+  <aside class="w-64 h-screen bg-black p-4 text-white fixed z-10">
+    <h1 class="text-xl font-bold mb-6">YWM CHECK</h1>
+    <label for="kategori1" class="block hover-glow px-4 py-2 rounded cursor-pointer">List</label>
+    <label for="kategori2" class="block hover-glow px-4 py-2 rounded cursor-pointer">Kategori 2</label>
+    <label for="kategori3" class="block hover-glow px-4 py-2 rounded cursor-pointer">Kategori 3</label>
+    <label for="kategori4" class="block hover-glow px-4 py-2 rounded cursor-pointer">Kategori 4</label>
+    <label for="kategori5" class="block hover-glow px-4 py-2 rounded cursor-pointer">Kategori 5</label>
+    <hr class="my-4 border-gray-600">
+    <label for="admin" class="block hover-glow px-4 py-2 rounded cursor-pointer font-bold">Admin Panel</label>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main ml-64 p-6 relative z-10">
+    <!-- Kategori 1 (List) -->
+    <div id="icerik-kategori1" class="content-section">
+      <h2 class="text-2xl font-bold mb-4">List</h2>
+      <ul class="space-y-2" id="oyuncu-listesi">
+        <!-- Oyuncular JS ile eklenecek -->
+      </ul>
+    </div>
+
+    <!-- Diğer Kategoriler -->
+    <div id="icerik-kategori2" class="content-section"><h2 class="text-2xl font-bold">Kategori 2</h2></div>
+    <div id="icerik-kategori3" class="content-section"><h2 class="text-2xl font-bold">Kategori 3</h2></div>
+    <div id="icerik-kategori4" class="content-section"><h2 class="text-2xl font-bold">Kategori 4</h2></div>
+    <div id="icerik-kategori5" class="content-section"><h2 class="text-2xl font-bold">Kategori 5</h2></div>
+
+    <!-- Admin Panel -->
+    <div id="icerik-admin" class="content-section">
+      <h2 class="text-2xl font-bold mb-4">Admin Panel</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-form">
+        <!-- Oyuncu inputları buraya JS ile eklenecek -->
+      </div>
+    </div>
+  </main>
+
+  <!-- JS: Oyuncuları oluştur + senkronize et -->
+  <script>
+    const oyuncuListesi = document.getElementById("oyuncu-listesi");
+    const adminForm = document.getElementById("admin-form");
+
+    for (let i = 1; i <= 20; i++) {
+      // Oyuncu Listesi tarafı
+      const li = document.createElement("li");
+      li.className = "transparent-card p-4 rounded hover-glow card";
+      li.setAttribute("tabindex", "0");
+      li.innerHTML = `
+        <span id="oyuncu-ad-${i}">Oyuncu ${i}</span>
+        <div class="detay">
+          <strong>Discord:</strong> <span id="discord-${i}">Oyuncu${i}#00${i}</span><br>
+          <strong>Hesap Tarihi:</strong> <span id="tarih-${i}">01.01.2020</span>
+        </div>
+      `;
+      oyuncuListesi.appendChild(li);
+
+      // Admin Form tarafı
+      const div = document.createElement("div");
+      div.className = "transparent-card p-4 rounded hover-glow";
+      div.innerHTML = `
+        <label class="block mb-1">Oyuncu Adı:</label>
+        <input type="text" class="w-full p-2 rounded bg-black text-white mb-2" value="Oyuncu ${i}" oninput="document.getElementById('oyuncu-ad-${i}').innerText = this.value">
+        <label class="block mb-1">Discord:</label>
+        <input type="text" class="w-full p-2 rounded bg-black text-white mb-2" value="Oyuncu${i}#00${i}" oninput="document.getElementById('discord-${i}').innerText = this.value">
+        <label class="block mb-1">Hesap Kurma Tarihi:</label>
+        <input type="text" class="w-full p-2 rounded bg-black text-white" value="01.01.2020" oninput="document.getElementById('tarih-${i}').innerText = this.value">
+      `;
+      adminForm.appendChild(div);
+    }
+  </script>
+</body>
+</html>
